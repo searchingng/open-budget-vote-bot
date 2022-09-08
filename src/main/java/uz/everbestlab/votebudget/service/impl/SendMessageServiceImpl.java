@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.MultiValueMapAdapter;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import uz.everbestlab.votebudget.dto.Code;
@@ -53,7 +54,6 @@ public class SendMessageServiceImpl implements SendMessageService {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId.toString());
         sendMessage.setText(response);
-        sendMessage.setParseMode("HTML");
         return sendMessage;
     }
 
@@ -90,11 +90,13 @@ public class SendMessageServiceImpl implements SendMessageService {
             } else if (e.getResponseBodyAsString().startsWith("{\"detail\":\"Запрос был проигнорирован"))
                 return "❗ Ko'p urindingiz. Iltimos bir ozdan keyin urunib ko'ring.";
             else
-                return response + " " + e.getResponseBodyAsString();
+                return e.getMessage();
+        } catch (HttpServerErrorException e) {
+            return e.getMessage();
         }
 
         if (result == null)
-            return response + " [Response body is Null]";
+            return response;
 
         savePhoneToken(chatId, requestPhone, result.getToken());
         return "📨 Sizga yuborilgan SMS kodni kiriting";
