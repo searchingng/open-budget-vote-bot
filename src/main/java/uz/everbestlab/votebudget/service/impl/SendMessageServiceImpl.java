@@ -56,7 +56,7 @@ public class SendMessageServiceImpl implements SendMessageService {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId.toString());
         sendMessage.setText(response);
-        sendMessage.setParseMode("Markdown");
+        sendMessage.setParseMode("MarkdownV2");
         return sendMessage;
     }
 
@@ -67,12 +67,12 @@ public class SendMessageServiceImpl implements SendMessageService {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId.toString());
         sendMessage.setText(response);
-        sendMessage.setParseMode("Markdown");
+        sendMessage.setParseMode("MarkdownV2");
         return sendMessage;
     }
 
     private String sendPhoneNumber(Long chatId, String text) {
-        String response = "📞 Iltimos telefon raqamini [_991234567_] ko'rinishida kiriting";
+        String response = "📞 Iltimos telefon raqamini _991234567_ ko'rinishida kiriting";
         if (text.length() != 9)
             return response;
 
