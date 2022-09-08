@@ -110,7 +110,7 @@ public class SendMessageServiceImpl implements SendMessageService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        RequestEntity<Code> entity = new RequestEntity(code, headers, HttpMethod.POST, URI.create(PHONE_URL));
+        RequestEntity<Code> entity = new RequestEntity(code, headers, HttpMethod.POST, URI.create(CODE_URL));
 
         ResponseEntity<Result> responseEntity;
 
