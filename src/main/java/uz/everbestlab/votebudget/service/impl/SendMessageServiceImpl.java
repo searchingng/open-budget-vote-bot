@@ -19,7 +19,9 @@ import uz.everbestlab.votebudget.repo.PhoneTokenRepository;
 import uz.everbestlab.votebudget.service.SendMessageService;
 
 import javax.ws.rs.core.MultivaluedHashMap;
+import java.net.InetSocketAddress;
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -75,8 +77,7 @@ public class SendMessageServiceImpl implements SendMessageService {
         String requestPhone = "998" + text;
         Phone phone = new Phone(APP, KEY, requestPhone);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpHeaders headers = getHeaders();
         RequestEntity<Result> entity = new RequestEntity(phone, headers, HttpMethod.POST, URI.create(PHONE_URL));
         Result result = null;
 
@@ -111,8 +112,7 @@ public class SendMessageServiceImpl implements SendMessageService {
         PhoneToken phoneToken = phoneTokenRepository.findByChatId(chatId).get();
         Code code = new Code(APP, text, phoneToken.getPhone(), phoneToken.getToken());
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpHeaders headers = getHeaders();
         RequestEntity<Code> entity = new RequestEntity(code, headers, HttpMethod.POST, URI.create(CODE_URL));
 
         ResponseEntity<Result> responseEntity;
@@ -129,6 +129,14 @@ public class SendMessageServiceImpl implements SendMessageService {
             return "✅ Siz muvaffaqiyatli ovoz berdingiz!";
 
         return response;
+    }
+
+    private HttpHeaders getHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept((Collections.singletonList(MediaType.ALL)));
+        headers.setConnection("keep-alive");
+        return headers;
     }
 
     private void savePhoneToken(Long chatId, String text, String token) {
