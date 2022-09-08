@@ -83,12 +83,15 @@ public class SendMessageServiceImpl implements SendMessageService {
 
         try {
             ResponseEntity<Result> responseEntity = restTemplate.exchange(entity, Result.class);
+            Thread.sleep(3000);
             result = responseEntity.getBody();
         } catch (HttpClientErrorException e) {
             if (e.getResponseBodyAsString().equals("{\"detail\":\"This number was used to vote\"}")) {
                 return "Bu raqam allaqachon ovoz bergan";
             } else
                 return response;
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
 
         if (result == null)
