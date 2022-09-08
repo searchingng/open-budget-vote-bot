@@ -64,7 +64,6 @@ public class SendMessageServiceImpl implements SendMessageService {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId.toString());
         sendMessage.setText(response);
-        sendMessage.setParseMode("HTML");
         return sendMessage;
     }
 
@@ -121,7 +120,9 @@ public class SendMessageServiceImpl implements SendMessageService {
         try {
             responseEntity = restTemplate.exchange(entity, Result.class);
         } catch (HttpClientErrorException e){
-            return response;
+            return response + "\n" + e.getMessage();
+        } catch (HttpServerErrorException e) {
+            return e.getMessage();
         }
 
         if (responseEntity.getStatusCodeValue() == 200)
