@@ -87,8 +87,10 @@ public class SendMessageServiceImpl implements SendMessageService {
             result = responseEntity.getBody();
         } catch (HttpClientErrorException e) {
             if (e.getResponseBodyAsString().equals("{\"detail\":\"This number was used to vote\"}")) {
-                return "Bu raqam allaqachon ovoz bergan";
-            } else
+                return "❗ Bu raqam allaqachon ovoz bergan";
+            } else if (e.getResponseBodyAsString().startsWith("{\"detail\":\"Запрос был проигнорирован"))
+                return "❗ Ko'p urindingiz. Iltimos bir ozdan keyin urunib ko'ring.";
+            else
                 return response;
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
