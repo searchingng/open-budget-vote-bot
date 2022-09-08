@@ -70,7 +70,7 @@ public class SendMessageServiceImpl implements SendMessageService {
     }
 
     private String sendPhoneNumber(Long chatId, String text) {
-        String response = "📞 Iltimos telefon raqamini <b>[991234567]</b> ko'rinishida kiriting";
+        String response = "📞 Iltimos telefon raqamini [__991234567__] ko'rinishida kiriting";
         if (text.length() != 9)
             return response;
 
