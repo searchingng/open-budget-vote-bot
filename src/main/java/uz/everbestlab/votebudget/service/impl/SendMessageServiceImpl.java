@@ -83,7 +83,6 @@ public class SendMessageServiceImpl implements SendMessageService {
 
         try {
             ResponseEntity<Result> responseEntity = restTemplate.exchange(entity, Result.class);
-            Thread.sleep(3000);
             result = responseEntity.getBody();
         } catch (HttpClientErrorException e) {
             if (e.getResponseBodyAsString().equals("{\"detail\":\"This number was used to vote\"}")) {
@@ -91,13 +90,11 @@ public class SendMessageServiceImpl implements SendMessageService {
             } else if (e.getResponseBodyAsString().startsWith("{\"detail\":\"Запрос был проигнорирован"))
                 return "❗ Ko'p urindingiz. Iltimos bir ozdan keyin urunib ko'ring.";
             else
-                return response;
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+                return response + " " + e.getResponseBodyAsString();
         }
 
         if (result == null)
-            return response;
+            return response + " [Response body is Null]";
 
         savePhoneToken(chatId, requestPhone, result.getToken());
         return "📨 Sizga yuborilgan SMS kodni kiriting";
