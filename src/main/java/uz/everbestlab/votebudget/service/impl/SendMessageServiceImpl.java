@@ -56,6 +56,7 @@ public class SendMessageServiceImpl implements SendMessageService {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId.toString());
         sendMessage.setText(response);
+        sendMessage.setParseMode("Markdown");
         return sendMessage;
     }
 
@@ -66,6 +67,7 @@ public class SendMessageServiceImpl implements SendMessageService {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId.toString());
         sendMessage.setText(response);
+        sendMessage.setParseMode("Markdown");
         return sendMessage;
     }
 
